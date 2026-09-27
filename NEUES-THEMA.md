@@ -6,6 +6,9 @@ Einfach schreiben, z. B.:
 
 Hilfreich, aber optional: Beispielaufgabe aus dem Schulheft (Foto), Zahlenraum, typische Fehler von Greta.
 
+## Figuren
+Greta (blond, Pferdeschwanz), WuschWusch (Widderkaninchen, heller Pulli mit Möhren), BabyAffi (blau-weiß gestreiftes Nachthemd, rote Schleife), Lenchen (Bärin, rosa Oberteil, blaue Hose). Gerne in Sachaufgaben verwenden.
+
 ## Für Claude (technisch)
 1. `themen/_vorlage.js` nach `themen/<id>.js` kopieren und `erzeuge(stufe)` schreiben.
 2. In `index.html` unter „THEMEN“ eine `<script>`-Zeile ergänzen.
@@ -26,6 +29,12 @@ Hilfreich, aber optional: Beispielaufgabe aus dem Schulheft (Foto), Zahlenraum, 
 // Rechentafel
 { art:'tafel', modus:'fehler', op:'+', oben:[10,20], links:[5,7], zellen:[[{wert:15,richtig:15},{wert:26,richtig:25}], …] }
 { art:'tafel', modus:'ausfuellen', …, zellen:[[{wert:15},{loesung:25}], …] }
+
+// Rechenmauer (oben → unten)
+{ art:'mauer', reihen:[[App.feld(30)], [12, App.feld(18)], [5, 7, 11]] }
+
+// Hervorgehobener Text in einer Rechenzeile
+zeilen:[[{text:'3 + <span class="punkt">4 · 5</span>'}, '=', App.feld(23)]]
 ```
 
 ### Sterne

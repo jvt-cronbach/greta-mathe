@@ -33,8 +33,11 @@ small { font-size: .78em; }
 .start-inhalt { display: grid; gap: 18px; }
 @media (min-width: 900px) and (orientation: landscape) {
   .start-inhalt { grid-template-columns: 1.25fr 1fr; align-items: start; }
-  .start-inhalt .themen { grid-template-columns: 1fr; }
-  .start-inhalt .karte { min-height: 0; }
+  .start-inhalt .themen { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .start-inhalt .karte { min-height: 0; padding: 12px 14px; }
+  .start-inhalt .karte .symbol { font-size: 1.9rem; }
+  .start-inhalt .karte .titel { font-size: 1.1rem; }
+  .start-inhalt .karte .info { font-size: .78rem; }
 }
 .welt-box { background: #fff; border-radius: var(--radius); overflow: hidden; box-shadow: var(--schatten); }
 .welt svg { display: block; width: 100%; height: auto; }
@@ -47,11 +50,11 @@ small { font-size: .78em; }
 .themen { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
 .karte {
   background: var(--farbe); color: #fff; border-radius: var(--radius); padding: 16px 18px; text-align: left;
-  display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto auto; column-gap: 14px; row-gap: 2px;
+  display: grid; grid-template-columns: 1fr; row-gap: 2px; overflow-wrap: anywhere;
   box-shadow: 0 6px 0 rgba(0, 0, 0, .16); transition: transform .08s; min-height: 140px; align-content: center;
 }
 .karte:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0, 0, 0, .16); }
-.karte .symbol { grid-row: 1 / 4; font-size: 2.6rem; line-height: 1; align-self: center; }
+.karte .symbol { font-size: 2.3rem; line-height: 1.1; }
 .karte .titel { font-size: 1.3rem; font-weight: 900; }
 .karte .info { font-size: .85rem; opacity: .95; }
 .karte .gespielt { font-size: .75rem; font-weight: 800; background: rgba(255, 255, 255, .25); border-radius: 99px; padding: 1px 10px; justify-self: start; margin-top: 4px; }
@@ -161,6 +164,19 @@ small { font-size: .78em; }
 .tafel td.war-richtig { border-color: var(--rot); background: var(--rot-hell); }
 .tafel td.gefunden { border-color: var(--gruen); background: var(--gruen-hell); }
 
+/* Punkt vor Strich */
+.punkt { background: #fff1a8; border-radius: 10px; padding: 0 .2em; box-shadow: 0 0 0 3px #ffe066; }
+
+/* Rechenmauer */
+.mauer { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums; padding: 6px 0; }
+.mauer-reihe { display: flex; gap: 6px; }
+.stein { width: 3.5em; height: 1.9em; display: flex; align-items: center; justify-content: center; background: #f3d9c4; border: 3px solid #d9a57b; border-radius: 8px; color: #5a3418; }
+.mauer .feld.stein { min-width: 0; background: #fff; border: 3px dashed #d9a57b; color: #4330a8; height: 1.9em; }
+.mauer .feld.stein.aktiv { border: 3px solid var(--akzent); }
+.mauer .feld.stein.richtig { border: 3px solid var(--gruen); background: var(--gruen-hell); color: #17783f; }
+.mauer .feld.stein.falsch { border: 3px solid var(--rot); background: var(--rot-hell); color: #b0281a; }
+.mauer .feld.stein.loesung { border: 3px solid #f0a020; background: #fff4dd; color: #9a5b00; }
+
 .stern-flug { position: fixed; z-index: 60; font-size: 2rem; pointer-events: none; animation: flug .85s ease-in forwards; transform: translate(-50%, 0); }
 
 /* ---------------- Ende ---------------- */
@@ -182,6 +198,8 @@ small { font-size: .78em; }
 .winkarm { transform-box: fill-box; transform-origin: 0% 100%; animation: winken 1.8s ease-in-out infinite; }
 .zopf { transform-box: fill-box; transform-origin: 5% 15%; animation: zopf 2.6s ease-in-out infinite; }
 .hase-anim { transform-box: fill-box; transform-origin: 50% 100%; animation: hoppeln 2.6s ease-in-out infinite; }
+.ohr-l { transform-box: fill-box; transform-origin: 80% 5%; animation: ohr 2.6s ease-in-out infinite; }
+.ohr-r { transform-box: fill-box; transform-origin: 20% 5%; animation: ohr 2.6s ease-in-out infinite reverse; }
 .affe-anim { transform-box: fill-box; transform-origin: 50% 0%; animation: schaukeln 3.2s ease-in-out infinite; }
 .baer-anim { transform-box: fill-box; transform-origin: 50% 100%; animation: wiegen 4s ease-in-out infinite; }
 .wolke { animation: ziehen 22s ease-in-out infinite alternate; }
@@ -194,6 +212,7 @@ small { font-size: .78em; }
 @keyframes winken { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-20deg); } }
 @keyframes zopf { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(7deg); } }
 @keyframes hoppeln { 0%, 60%, 100% { transform: translateY(0); } 70% { transform: translateY(-10px); } 80% { transform: translateY(0); } 87% { transform: translateY(-4px); } }
+@keyframes ohr { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
 @keyframes schaukeln { 0%, 100% { transform: rotate(9deg); } 50% { transform: rotate(-9deg); } }
 @keyframes wiegen { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
 @keyframes ziehen { to { transform: translateX(40px); } }

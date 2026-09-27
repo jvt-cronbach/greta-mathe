@@ -5,8 +5,8 @@
 
   const GESCHICHTEN = [
     (a, d) => `Greta hat ${a} Karotten. Sie verteilt sie gerecht an ${d} Hasen. Wie viele Karotten bekommt jeder Hase? Wie viele bleiben übrig?`,
-    (a, d) => `Momo der Affe hat ${a} Bananen. Er legt immer ${d} Bananen in einen Korb. Wie viele Körbe werden voll? Wie viele Bananen bleiben übrig?`,
-    (a, d) => `Brummi der Bär hat ${a} Gläser Honig. In jedes Regal passen ${d} Gläser. Wie viele Regale werden voll? Wie viele Gläser bleiben übrig?`,
+    (a, d) => `BabyAffi hat ${a} Bananen. Er legt immer ${d} Bananen in einen Korb. Wie viele Körbe werden voll? Wie viele Bananen bleiben übrig?`,
+    (a, d) => `Lenchen die Bärin hat ${a} Gläser Honig. In jedes Regal passen ${d} Gläser. Wie viele Regale werden voll? Wie viele Gläser bleiben übrig?`,
     (a, d) => `${a} Kinder fahren zum Reiterhof. In jedes Auto passen ${d} Kinder. Wie viele Autos sind ganz voll? Wie viele Kinder bleiben übrig?`,
     (a, d) => `Greta hat ${a} Sticker. Sie klebt immer ${d} Sticker auf eine Seite. Wie viele Seiten werden voll? Wie viele Sticker bleiben übrig?`,
     (a, d) => `${a} Äpfel werden in Tüten verpackt. In jede Tüte kommen ${d} Äpfel. Wie viele Tüten werden voll? Wie viele Äpfel bleiben übrig?`,

@@ -4,6 +4,7 @@
    rechnen  – Zeilen aus Zahlen/Text und Eingabefeldern
    auswahl  – Multiple Choice („Was fällt dir auf?“)
    tafel    – Rechentafel: Fehler finden ODER Lücken ausfüllen
+   mauer    – Rechenmauer (Stein = Summe der zwei Steine darunter)
    ===================================================================== */
 'use strict';
 
@@ -22,6 +23,9 @@ App.typ('rechnen', {
           g.append(f.el);
         } else if (tok === undefined || tok === '') {
           g.append(api.el('span', 'tok'));
+        } else if (typeof tok === 'object' && tok.text !== undefined) {
+          // {text:'4 · 5', klasse:'punkt'} – z. B. zum Hervorheben
+          g.append(api.el('span', 'tok op ' + (tok.klasse || ''), String(tok.text)));
         } else {
           const istWort = typeof tok === 'string' && /[a-zäöüß]/i.test(tok);
           const cls = typeof tok === 'number' ? 'tok zahl' : istWort ? 'tok wort' : 'tok op';
@@ -163,5 +167,30 @@ App.typ('tafel', {
         });
       },
     };
+  },
+});
+
+/* ---------- mauer ----------
+   Rechenmauer: jeder Stein = Summe der beiden Steine darunter.
+   { art:'mauer', reihen:[ [oben], [.., ..], [unten, .., ..] ] }
+   Jeder Stein ist eine Zahl (vorgegeben) oder App.feld(loesung). */
+App.typ('mauer', {
+  baue(s, box, api) {
+    const m = api.el('div', 'mauer');
+    s.reihen.forEach((reihe) => {
+      const r = api.el('div', 'mauer-reihe');
+      reihe.forEach((stein) => {
+        if (stein && stein.feld) {
+          const f = api.feld(stein.loesung, stein);
+          f.el.classList.add('stein');
+          r.append(f.el);
+        } else {
+          r.append(api.el('span', 'stein', String(stein)));
+        }
+      });
+      m.append(r);
+    });
+    box.append(m);
+    return {};
   },
 });

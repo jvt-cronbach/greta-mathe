@@ -8,13 +8,13 @@
 App.welt = (function () {
   const STUFEN = [
     { ab: 0, titel: 'Gretas Garten', neu: 'Greta startet ihre Mathe-Reise.' },
-    { ab: 20, titel: 'Hoppel der Hase', neu: 'Hoppel der Hase ist jetzt Gretas Freund!' },
+    { ab: 20, titel: 'WuschWusch der Hase', neu: 'WuschWusch der Hase ist jetzt Gretas Freund!' },
     { ab: 50, titel: 'Glitzer-Schleife', neu: 'Greta bekommt eine Glitzer-Schleife für ihren Pferdeschwanz.' },
     { ab: 90, titel: 'Der Baum wächst', neu: 'Der kleine Baum in Gretas Garten ist gewachsen!' },
-    { ab: 140, titel: 'Momo der Affe', neu: 'Momo der Affe schaukelt jetzt im großen Baum!' },
+    { ab: 140, titel: 'BabyAffi', neu: 'BabyAffi der kleine Affe schaukelt jetzt im großen Baum!' },
     { ab: 200, titel: 'Das Baumhaus', neu: 'Ein Baumhaus! Gebaut aus lauter Mathe-Sternen.' },
     { ab: 270, titel: 'Heldinnen-Umhang', neu: 'Greta trägt jetzt einen Mathe-Heldinnen-Umhang!' },
-    { ab: 350, titel: 'Brummi der Bär', neu: 'Brummi der Bär kommt zu Besuch – und bleibt!' },
+    { ab: 350, titel: 'Lenchen die Bärin', neu: 'Lenchen die Bärin kommt zu Besuch – und bleibt!' },
     { ab: 440, titel: 'Der Regenbogen', neu: 'Ein Regenbogen leuchtet über Gretas Welt!' },
     { ab: 550, titel: 'Die Mathe-Krone', neu: 'Greta trägt jetzt die Mathe-Krone!' },
   ];
@@ -85,36 +85,45 @@ App.welt = (function () {
     </g>`;
   }
 
-  function hase() {
-    const fell = '#efe9e4', rand = '#cbbfb6';
+  function hase() { // WuschWusch: Widderkaninchen mit Schlappohren und Möhren-Pulli
+    const fell = '#efe9e4', rand = '#cbbfb6', pulli = '#d8ecff', pulliRand = '#9fc3e6';
+    const moehre = (x, y, w) => `<g transform="translate(${x} ${y}) rotate(${w})"><path d="M-2.4 -3.5 L2.4 -3.5 L0 5.5Z" fill="#ff8c1a"/><path d="M-1.4 -3.5 L-2.6 -6.5 M0 -3.5 L0 -7 M1.4 -3.5 L2.6 -6.5" stroke="#3aa655" stroke-width="1.3" stroke-linecap="round"/></g>`;
     return `<g class="hase-anim">
-      <ellipse cx="-7" cy="-68" rx="4.8" ry="15" fill="${fell}" stroke="${rand}" transform="rotate(-12 -7 -68)"/>
-      <ellipse cx="-7" cy="-68" rx="2.2" ry="10" fill="#ffc2cf" transform="rotate(-12 -7 -68)"/>
-      <ellipse cx="7" cy="-68" rx="4.8" ry="15" fill="${fell}" stroke="${rand}" transform="rotate(12 7 -68)"/>
-      <ellipse cx="7" cy="-68" rx="2.2" ry="10" fill="#ffc2cf" transform="rotate(12 7 -68)"/>
       <circle cx="17" cy="-12" r="6" fill="#fff" stroke="${rand}"/>
       <ellipse cx="0" cy="-20" rx="17" ry="19" fill="${fell}" stroke="${rand}"/>
-      <ellipse cx="0" cy="-17" rx="10" ry="12" fill="#fff"/>
-      <circle cx="0" cy="-46" r="14" fill="${fell}" stroke="${rand}"/>
-      <circle cx="-5" cy="-48" r="2.3" fill="#3a2e2a"/><circle cx="5" cy="-48" r="2.3" fill="#3a2e2a"/>
-      <circle cx="-4.3" cy="-48.8" r=".8" fill="#fff"/><circle cx="5.7" cy="-48.8" r=".8" fill="#fff"/>
-      <ellipse cx="0" cy="-42.5" rx="2.4" ry="1.8" fill="#ff8fab"/>
-      <path d="M-3 -39 Q0 -37 0 -40 Q0 -37 3 -39" stroke="#9c6b6b" stroke-width="1.1" fill="none"/>
-      <circle cx="-9" cy="-42" r="2.6" fill="#ffb3c1" opacity=".6"/><circle cx="9" cy="-42" r="2.6" fill="#ffb3c1" opacity=".6"/>
+      <path d="M-14 -33 Q0 -39 14 -33 Q19 -20 16.5 -7 Q0 -2.5 -16.5 -7 Q-19 -20 -14 -33Z" fill="${pulli}" stroke="${pulliRand}" stroke-width="1.2"/>
+      <path d="M-16.5 -8.5 Q0 -4 16.5 -8.5" stroke="${pulliRand}" stroke-width="2.4" fill="none"/>
+      ${moehre(-7, -23, -18)}${moehre(6, -17, 14)}${moehre(-3, -12, 4)}
+      <ellipse cx="-16" cy="-23" rx="4.5" ry="8.5" fill="${pulli}" stroke="${pulliRand}" stroke-width="1.2" transform="rotate(18 -16 -23)"/>
+      <ellipse cx="16" cy="-23" rx="4.5" ry="8.5" fill="${pulli}" stroke="${pulliRand}" stroke-width="1.2" transform="rotate(-18 16 -23)"/>
+      <circle cx="-18.5" cy="-15.5" r="3.5" fill="#fff" stroke="${rand}"/><circle cx="18.5" cy="-15.5" r="3.5" fill="#fff" stroke="${rand}"/>
+      <circle cx="0" cy="-45" r="14.5" fill="${fell}" stroke="${rand}"/>
+      <path d="M-7 -32.5 Q0 -29 7 -32.5" stroke="${pulliRand}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      <circle cx="-5" cy="-46" r="2.3" fill="#3a2e2a"/><circle cx="5" cy="-46" r="2.3" fill="#3a2e2a"/>
+      <circle cx="-4.3" cy="-46.8" r=".8" fill="#fff"/><circle cx="5.7" cy="-46.8" r=".8" fill="#fff"/>
+      <ellipse cx="0" cy="-40.5" rx="2.4" ry="1.8" fill="#ff8fab"/>
+      <path d="M-3 -37 Q0 -35 0 -38 Q0 -35 3 -37" stroke="#9c6b6b" stroke-width="1.1" fill="none"/>
+      <circle cx="-8" cy="-39" r="2.4" fill="#ffb3c1" opacity=".6"/><circle cx="8" cy="-39" r="2.4" fill="#ffb3c1" opacity=".6"/>
+      <g class="ohr-l"><path d="M-7 -57 C-18 -58 -24 -44 -22 -30 C-21 -24 -15 -23 -14 -29 C-13 -40 -10 -50 -4 -55Z" fill="${fell}" stroke="${rand}"/>
+        <path d="M-9 -53 C-16 -50 -19 -40 -18.5 -31" stroke="#ffc2cf" stroke-width="2.5" stroke-linecap="round" fill="none"/></g>
+      <g class="ohr-r"><path d="M7 -57 C18 -58 24 -44 22 -30 C21 -24 15 -23 14 -29 C13 -40 10 -50 4 -55Z" fill="${fell}" stroke="${rand}"/>
+        <path d="M9 -53 C16 -50 19 -40 18.5 -31" stroke="#ffc2cf" stroke-width="2.5" stroke-linecap="round" fill="none"/></g>
+      <ellipse cx="0" cy="-57.5" rx="8" ry="3.5" fill="${fell}"/>
       <ellipse cx="-8" cy="-2.5" rx="7.5" ry="4" fill="${fell}" stroke="${rand}"/><ellipse cx="8" cy="-2.5" rx="7.5" ry="4" fill="${fell}" stroke="${rand}"/>
     </g>`;
   }
 
-  function affe() { // hängt am Ast, Griff bei 0,0
+  function affe() { // BabyAffi im blau-weiß gestreiften Nachthemd; hängt am Ast, Griff bei 0,0
     const fell = '#8a5a3c', hell = '#e9bf95';
     return `<g class="affe-anim">
       <path d="M0 0 Q3 12 0 24" stroke="${fell}" stroke-width="5.5" stroke-linecap="round" fill="none"/>
       <circle cx="0" cy="0" r="4" fill="${fell}"/>
-      <path d="M8 64 C30 70 32 44 19 44 C10 44 12 55 19 53" stroke="${fell}" stroke-width="4" stroke-linecap="round" fill="none"/>
-      <path d="M-8 52 Q-20 58 -24 50" stroke="${fell}" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M8 66 C30 72 32 46 19 46 C10 46 12 57 19 55" stroke="${fell}" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M-6 72 Q-9 82 -7 88 M6 72 Q9 82 7 88" stroke="${fell}" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M-9 52 Q-20 58 -24 50" stroke="${fell}" stroke-width="5" stroke-linecap="round" fill="none"/>
       <ellipse cx="0" cy="58" rx="12" ry="15" fill="${fell}"/>
-      <ellipse cx="0" cy="60" rx="7" ry="10" fill="${hell}"/>
-      <path d="M-6 70 Q-9 80 -7 86 M6 70 Q9 80 7 86" stroke="${fell}" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M-9 45 Q0 42 9 45 L15 80 Q0 84 -15 80Z" fill="url(#streifen)" stroke="#2f5fb3" stroke-width="1"/>
+      <g transform="translate(0 46)"><path d="M0 0 L-6 -4 L-6 4Z M0 0 L6 -4 L6 4Z" fill="#e8343f"/><circle r="1.8" fill="#b81f2a"/></g>
       <circle cx="-13" cy="33" r="5.5" fill="${hell}" stroke="${fell}" stroke-width="2"/>
       <circle cx="13" cy="33" r="5.5" fill="${hell}" stroke="${fell}" stroke-width="2"/>
       <circle cx="0" cy="33" r="13" fill="${fell}"/>
@@ -124,17 +133,23 @@ App.welt = (function () {
     </g>`;
   }
 
-  function baer() {
-    const fell = '#9b6238', hell = '#e0b287';
+  function baer() { // Lenchen: rosa Oberteil, blaue Hose
+    const fell = '#9b6238', hell = '#e0b287', rosa = '#ff8cc6', rosaD = '#e8649f', blau = '#3b6fd8', blauD = '#2a55ad';
     return `<g class="baer-anim">
       <circle cx="-15" cy="-80" r="8" fill="${fell}"/><circle cx="15" cy="-80" r="8" fill="${fell}"/>
       <circle cx="-15" cy="-80" r="4" fill="${hell}"/><circle cx="15" cy="-80" r="4" fill="${hell}"/>
-      <ellipse cx="0" cy="-26" rx="26" ry="27" fill="${fell}"/>
-      <ellipse cx="0" cy="-22" rx="15" ry="17" fill="${hell}"/>
-      <ellipse cx="-24" cy="-34" rx="7" ry="13" fill="${fell}" transform="rotate(20 -24 -34)"/>
-      <ellipse cx="24" cy="-34" rx="7" ry="13" fill="${fell}" transform="rotate(-20 24 -34)"/>
+      <rect x="-19" y="-18" width="15" height="15" rx="5" fill="${blau}"/><rect x="4" y="-18" width="15" height="15" rx="5" fill="${blau}"/>
       <ellipse cx="-12" cy="-3" rx="10" ry="6" fill="${fell}"/><ellipse cx="12" cy="-3" rx="10" ry="6" fill="${fell}"/>
+      <ellipse cx="0" cy="-26" rx="26" ry="27" fill="${blau}"/>
+      <path d="M0 -20 L0 -6" stroke="${blauD}" stroke-width="2" stroke-linecap="round"/>
+      <path d="M-25.4 -20 A26 27 0 1 1 25.4 -20 Q0 -14 -25.4 -20Z" fill="${rosa}"/>
+      <path d="M-25.4 -20 Q0 -14 25.4 -20" stroke="${rosaD}" stroke-width="2.4" fill="none"/>
+      <path d="M0 -30 C-6 -36 -10 -30 0 -24 C10 -30 6 -36 0 -30Z" fill="#fff" opacity=".9"/>
+      <ellipse cx="-24" cy="-34" rx="7" ry="13" fill="${rosa}" stroke="${rosaD}" stroke-width="1.2" transform="rotate(20 -24 -34)"/>
+      <ellipse cx="24" cy="-34" rx="7" ry="13" fill="${rosa}" stroke="${rosaD}" stroke-width="1.2" transform="rotate(-20 24 -34)"/>
+      <circle cx="-28.4" cy="-22" r="5.5" fill="${fell}"/><circle cx="28.4" cy="-22" r="5.5" fill="${fell}"/>
       <circle cx="0" cy="-64" r="20" fill="${fell}"/>
+      <path d="M-11 -47 Q0 -42 11 -47" stroke="${rosaD}" stroke-width="3" fill="none" stroke-linecap="round"/>
       <ellipse cx="0" cy="-57" rx="9" ry="7" fill="${hell}"/>
       <ellipse cx="0" cy="-60" rx="4" ry="3" fill="#3a2a20"/>
       <path d="M-3 -54 Q0 -51 3 -54" stroke="#3a2a20" stroke-width="1.4" stroke-linecap="round" fill="none"/>
@@ -183,7 +198,7 @@ App.welt = (function () {
     const m = merkmale(sterne);
     const bogen = ['#ff5f5f', '#ffa24c', '#ffe066', '#6fd672', '#5fb4ff', '#9b7bff'];
     return `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gretas Welt">
-      <defs><linearGradient id="himmel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fdcff"/><stop offset="1" stop-color="#e6f7ff"/></linearGradient></defs>
+      <defs><linearGradient id="himmel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fdcff"/><stop offset="1" stop-color="#e6f7ff"/></linearGradient><pattern id="streifen" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fff"/><rect width="6" height="3" fill="#4a86e8"/></pattern></defs>
       <rect width="400" height="250" fill="url(#himmel)"/>
       <circle cx="52" cy="44" r="22" fill="#ffd54a"/><circle cx="52" cy="44" r="30" fill="#ffd54a" opacity=".25"/>
       <g class="wolke"><ellipse cx="150" cy="40" rx="24" ry="10" fill="#fff"/><ellipse cx="166" cy="34" rx="14" ry="10" fill="#fff"/></g>
