@@ -177,6 +177,24 @@ small { font-size: .78em; }
 .mauer .feld.stein.falsch { border: 3px solid var(--rot); background: var(--rot-hell); color: #b0281a; }
 .mauer .feld.stein.loesung { border: 3px solid #f0a020; background: #fff4dd; color: #9a5b00; }
 
+/* Rechenkette */
+.kette { display: flex; flex-wrap: wrap; align-items: center; row-gap: 26px; font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums; padding: 18px 0 6px; }
+.kette-teil { display: flex; align-items: center; }
+.glied { position: relative; min-width: 3.3em; height: 1.9em; padding: 0 .35em; border-radius: 999px; background: #fff; border: 3px solid var(--farbe); display: flex; align-items: center; justify-content: center; }
+.glied.hat-feld { border: 0; background: none; padding: 0; }
+.glied .feld { border-radius: 999px; min-width: 3.1em; height: 1.9em; }
+.glied.k-start:not(.hat-feld) { background: #fff4cc; }
+.glied.k-ziel:not(.hat-feld) { background: #e3f6e9; }
+.glied.k-start::before, .glied.k-ziel::before { position: absolute; top: -1.35em; left: 50%; transform: translateX(-50%); font-size: .45em; color: var(--leise); white-space: nowrap; }
+.glied.k-start::before { content: 'Start'; }
+.glied.k-ziel::before { content: 'Ziel 🏁'; }
+.pfeil { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 3.4em; margin: 0 6px; }
+.pfeil::after { content: ''; height: 1.6em; }
+.pfeil-text { font-size: .8em; color: var(--farbe); display: flex; gap: 4px; align-items: center; white-space: nowrap; min-height: 1.6em; padding: 0 4px 4px; }
+.pfeil-text .feld { font-size: 1em; min-width: 2.6em; height: 1.6em; border-radius: 10px; }
+.pfeil-linie { width: 100%; height: 3px; background: var(--farbe); position: relative; border-radius: 2px; }
+.pfeil-linie::after { content: ''; position: absolute; right: -3px; top: -6px; border-left: 11px solid var(--farbe); border-top: 7.5px solid transparent; border-bottom: 7.5px solid transparent; }
+
 .stern-flug { position: fixed; z-index: 60; font-size: 2rem; pointer-events: none; animation: flug .85s ease-in forwards; transform: translate(-50%, 0); }
 
 /* ---------------- Ende ---------------- */

@@ -33,6 +33,9 @@ Greta (blond, Pferdeschwanz), WuschWusch (Widderkaninchen, heller Pulli mit Möh
 // Rechenmauer (oben → unten)
 { art:'mauer', reihen:[[App.feld(30)], [12, App.feld(18)], [5, 7, 11]] }
 
+// Rechenkette (Pfeil-Lücke: ['·', App.feld(3)]; rueckwaerts:true = Eingabe ab Ziel)
+{ art:'kette', glieder:[12, App.feld(20), App.feld(60)], pfeile:['+ 8', '· 3'] }
+
 // Hervorgehobener Text in einer Rechenzeile
 zeilen:[[{text:'3 + <span class="punkt">4 · 5</span>'}, '=', App.feld(23)]]
 ```

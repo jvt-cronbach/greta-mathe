@@ -10,7 +10,7 @@ Auf dem Tablet in Chrome öffnen → Menü ⋮ → „Zum Startbildschirm hinzuf
 | Datei | Zweck | Bei neuen Themen ändern? |
 |---|---|---|
 | `js/engine.js` | Bildschirme, Ziffernblock, Prüfen, Sterne, Speicher | nein |
-| `js/typen.js` | Aufgabentypen: `rechnen`, `auswahl`, `tafel`, `mauer` | nur bei ganz neuer Aufgabenform |
+| `js/typen.js` | Aufgabentypen: `rechnen`, `auswahl`, `tafel`, `mauer`, `kette` | nur bei ganz neuer Aufgabenform |
 | `js/welt.js` | Greta, WuschWusch (Hase), BabyAffi (Affe), Lenchen (Bärin), Belohnungsstufen | nein |
 | `themen/*.js` | **ein Thema = eine Datei** | ja – neue Datei |
 | `index.html` | lädt alles | ja – eine Zeile pro neuem Thema |

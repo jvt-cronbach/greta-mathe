@@ -5,6 +5,7 @@
    auswahl  – Multiple Choice („Was fällt dir auf?“)
    tafel    – Rechentafel: Fehler finden ODER Lücken ausfüllen
    mauer    – Rechenmauer (Stein = Summe der zwei Steine darunter)
+   kette    – Rechenkette mit Pfeilen (Kettenaufgaben)
    ===================================================================== */
 'use strict';
 
@@ -191,6 +192,50 @@ App.typ('mauer', {
       m.append(r);
     });
     box.append(m);
+    return {};
+  },
+});
+
+/* ---------- kette ----------
+   Rechenkette mit Pfeilen: Start → (+ 8) → … → Ziel
+   { art:'kette', glieder:[12, App.feld(20), App.feld(60)], pfeile:['+ 8', '· 3'] }
+   Ein Pfeil kann auch eine Lücke haben: ['·', App.feld(3)]
+   rueckwaerts:true → Eingabe beginnt rechts beim Ziel. */
+App.typ('kette', {
+  baue(s, box, api) {
+    const k = api.el('div', 'kette');
+    const teile = [];
+    const glied = (g, i) => {
+      const n = s.glieder.length;
+      const z = api.el('div', 'glied' + (i === 0 ? ' k-start' : i === n - 1 ? ' k-ziel' : ''));
+      if (g && g.feld) { z.classList.add('hat-feld'); return { z, f: () => z.append(api.feld(g.loesung, g).el) }; }
+      z.append(api.el('span', 'glied-zahl', String(g)));
+      return { z, f: () => {} };
+    };
+    const pfeil = (pf) => {
+      const p = api.el('div', 'pfeil');
+      const text = api.el('div', 'pfeil-text');
+      const aufgaben = [];
+      (Array.isArray(pf) ? pf : [pf]).forEach((t) => {
+        if (t && t.feld) { const platz = api.el('span'); text.append(platz); aufgaben.push(() => platz.replaceWith(api.feld(t.loesung, t).el)); }
+        else text.append(api.el('span', '', String(t)));
+      });
+      p.append(text, api.el('div', 'pfeil-linie'));
+      return { p, f: () => aufgaben.forEach((a) => a()) };
+    };
+    s.glieder.forEach((g, i) => {
+      const gl = glied(g, i);
+      if (i === 0) { teile.push({ el: gl.z, felder: [gl.f] }); return; }
+      const pf = pfeil(s.pfeile[i - 1]);
+      const t = api.el('div', 'kette-teil');
+      t.append(pf.p, gl.z);
+      teile.push({ el: t, felder: [pf.f, gl.f] });
+    });
+    teile.forEach((t) => k.append(t.el));
+    // Felder in Eingabe-Reihenfolge anlegen (vorwärts oder vom Ziel rückwärts)
+    const reihenfolge = s.rueckwaerts ? teile.slice().reverse().map((t) => ({ felder: t.felder.slice().reverse() })) : teile;
+    reihenfolge.forEach((t) => t.felder.forEach((f) => f()));
+    box.append(k);
     return {};
   },
 });
