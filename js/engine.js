@@ -53,6 +53,71 @@ window.App = (function () {
     return stand.themen[id] || (stand.themen[id] = { runden: 0, schritte: 0, erster: 0, sterne: 0 });
   }
 
+  /* ---------------- Sicherung (Datei teilen und wieder einlesen) ---------------- */
+  const SICHERUNG_APP = 'greta-mathe';
+  const ganz = (x) => (Number.isFinite(Number(x)) && Number(x) > 0 ? Math.floor(Number(x)) : 0);
+  const datumText = (iso) => {
+    const d = new Date(iso);
+    if (!iso || isNaN(d)) return '';
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) +
+      ', ' + d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + ' Uhr';
+  };
+
+  /** Bittet den Browser, den Speicher nicht von selbst aufzuräumen. Ergebnis: true/false. */
+  async function schuetzeSpeicher() {
+    try {
+      if (!navigator.storage || !navigator.storage.persist) return false;
+      if (navigator.storage.persisted && (await navigator.storage.persisted())) return true;
+      return await navigator.storage.persist();
+    } catch (e) { return false; }
+  }
+
+  function sicherungText() {
+    return JSON.stringify({ app: SICHERUNG_APP, version: 1, datum: new Date().toISOString(), name: config.name, stand }, null, 1);
+  }
+
+  /** Prüft den Inhalt einer Sicherungsdatei und gibt einen sauberen Stand zurück (oder wirft). */
+  function leseSicherung(text) {
+    let d;
+    try { d = JSON.parse(text); } catch (e) { d = null; }
+    const s = d && d.app === SICHERUNG_APP ? d.stand : null;
+    if (!s || typeof s !== 'object' || !s.themen || typeof s.themen !== 'object') {
+      throw new Error('Das ist keine Sicherung der Mathe-Welt.');
+    }
+    const neu = neuerStand();
+    neu.sterne = ganz(s.sterne);
+    neu.ton = s.ton !== false;
+    Object.keys(s.themen).forEach((id) => {
+      if (id === '__proto__') return;
+      const q = s.themen[id] || {};
+      neu.themen[id] = { runden: ganz(q.runden), schritte: ganz(q.schritte), erster: ganz(q.erster), sterne: ganz(q.sterne) };
+    });
+    return { stand: neu, datum: d.datum };
+  }
+
+  /** Gibt die Sicherung über das Teilen-Menü weiter; wo das nicht geht, wird sie heruntergeladen. */
+  async function teileSicherung() {
+    const text = sicherungText();
+    const name = `mathe-welt-sicherung-${new Date().toISOString().slice(0, 10)}.txt`;
+    const gesichert = (wie) => { stand.gesichert = new Date().toISOString(); speichern(); return wie; };
+    let datei = null;
+    try { datei = new File([text], name, { type: 'text/plain' }); } catch (e) { /* sehr alter Browser */ }
+    if (datei && navigator.canShare && navigator.canShare({ files: [datei] })) {
+      try {
+        await navigator.share({ files: [datei], title: 'Sicherung ' + config.titel });
+        return gesichert('geteilt');
+      } catch (e) {
+        if (e && e.name === 'AbortError') return 'abgebrochen';
+      }
+    }
+    const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+    const a = el('a');
+    a.href = url; a.download = name;
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    return gesichert('geladen');
+  }
+
   /* ---------------- Töne ---------------- */
   let ac = null;
   function ton(art) {
@@ -480,15 +545,101 @@ window.App = (function () {
   }
 
   /* ======================= ELTERN ======================= */
-  function zeigeEltern() {
+  function zeigeEltern(hinweis) {
     const zeilen = themen.map((t) => {
       const s = statistik(t.id);
       const q = s.schritte ? Math.round((s.erster / s.schritte) * 100) + ' %' : '–';
       return `<tr><td>${t.symbol} ${t.titel}</td><td>${s.runden}</td><td>${s.schritte}</td><td>${q}</td><td>${s.sterne}</td></tr>`;
     }).join('');
+    const fa = zufall(12, 19), fb = zufall(12, 19);
     const d = overlay(`<h2>Für Eltern</h2>
       <table class="eltern-tabelle"><thead><tr><th>Thema</th><th>Runden</th><th>Aufgaben</th><th>1. Versuch richtig</th><th>⭐</th></tr></thead><tbody>${zeilen}</tbody></table>
-      <p class="klein">Sterne gesamt: <b>${stand.sterne}</b>. Pro Teilaufgabe gibt es 2 ⭐ beim ersten Versuch, 1 ⭐ nach Korrektur. Nach 3 Fehlversuchen wird die Lösung gezeigt.<br>Der Fortschritt ist nur auf diesem Gerät gespeichert.</p>`);
+      <p class="klein">Sterne gesamt: <b>${stand.sterne}</b>. Pro Teilaufgabe gibt es 2 ⭐ beim ersten Versuch, 1 ⭐ nach Korrektur. Nach 3 Fehlversuchen wird die Lösung gezeigt.</p>
+      <section class="sicherung">
+        <h3>Sicherung</h3>
+        <p class="klein">Der Fortschritt liegt nur auf diesem Gerät. Mit einer Sicherung lässt er sich nach einem Fehler oder auf einem neuen Tablet zurückholen.<br>
+          <span data-letzte></span><br><span data-schutz></span></p>
+        <div class="sich-knoepfe">
+          <button type="button" class="knopf-klein" data-sichern>📤 Sicherung teilen</button>
+          <button type="button" class="knopf-klein zweit" data-holen>📥 Wiederherstellen</button>
+        </div>
+        <input type="file" data-datei accept=".txt,.json,text/plain,application/json" hidden>
+        <p class="meldung versteckt" data-meldung></p>
+        <div class="sich-frage versteckt" data-frage></div>
+        <details class="hand">
+          <summary>Sterne von Hand setzen</summary>
+          <div class="hand-inhalt">
+          <p class="klein">Notlösung, falls keine Sicherung da ist. Die Zahlen pro Thema in der Tabelle bleiben dabei, wie sie sind.</p>
+          <label>Neue Sternzahl <input type="number" inputmode="numeric" min="0" max="99999" data-neu value="${stand.sterne}"></label>
+          <label>Für Eltern: ${fa} · ${fb} = <input type="number" inputmode="numeric" data-probe></label>
+          <button type="button" class="knopf-klein zweit" data-setzen>Übernehmen</button>
+          </div>
+        </details>
+      </section>`);
+    const q = (s) => $(s, d.box);
+    const melde = (text, art) => {
+      const m = q('[data-meldung]');
+      m.className = 'meldung ' + (art || 'gut');
+      m.textContent = text;
+    };
+    const zeigeLetzte = () => {
+      q('[data-letzte]').textContent = stand.gesichert ? 'Letzte Sicherung: ' + datumText(stand.gesichert) + '.' : 'Bisher wurde noch keine Sicherung erstellt.';
+    };
+    zeigeLetzte();
+    schuetzeSpeicher().then((ok) => {
+      const s = q('[data-schutz]');
+      if (s) s.textContent = ok ? 'Speicherschutz: aktiv. Chrome räumt die Daten nicht von selbst auf.'
+        : 'Speicherschutz: noch nicht aktiv. Chrome gewährt ihn meist, sobald die App installiert ist.';
+    });
+    if (typeof hinweis === 'string') melde(hinweis);
+
+    q('[data-sichern]').onclick = async () => {
+      const wie = await teileSicherung();
+      if (!d.ov.isConnected) return;
+      zeigeLetzte();
+      if (wie === 'geteilt') melde('Sicherung weitergegeben. Am besten per Mail an dich selbst oder in eine Cloud legen.');
+      else if (wie === 'geladen') melde('Sicherung als Datei gespeichert (Ordner „Downloads“).');
+      else melde('Teilen abgebrochen. Es wurde keine Sicherung erstellt.', 'schlecht');
+    };
+
+    const datei = q('[data-datei]');
+    q('[data-holen]').onclick = () => { datei.value = ''; datei.click(); };
+    datei.onchange = async () => {
+      const f = datei.files && datei.files[0];
+      if (!f) return;
+      const frage = q('[data-frage]');
+      frage.classList.add('versteckt');
+      let neu;
+      try { neu = leseSicherung(await f.text()); } catch (e) { melde(e.message || 'Die Datei konnte nicht gelesen werden.', 'schlecht'); return; } finally { datei.value = ''; }
+      q('[data-meldung]').classList.add('versteckt');
+      const weniger = neu.stand.sterne < stand.sterne;
+      frage.innerHTML = `<p>Sicherung${neu.datum ? ' vom ' + datumText(neu.datum) : ''}: <b>${neu.stand.sterne} ⭐</b><br>
+        Jetzt auf diesem Gerät: <b>${stand.sterne} ⭐</b>${weniger ? '<br><b>Achtung: Die Sicherung hat weniger Sterne als der jetzige Stand.</b>' : ''}</p>`;
+      const ja = el('button', 'knopf-klein', 'Jetzigen Stand ersetzen');
+      const nein = el('button', 'knopf-klein zweit', 'Abbrechen');
+      ja.onclick = () => {
+        stand = neu.stand;
+        if (neu.datum) stand.gesichert = neu.datum;
+        speichern(); d.zu(); zeigeStart();
+        zeigeEltern(`Wiederhergestellt: ${stand.sterne} ⭐`);
+      };
+      nein.onclick = () => frage.classList.add('versteckt');
+      const reihe = el('div', 'sich-knoepfe');
+      reihe.append(ja, nein);
+      frage.append(reihe);
+      frage.classList.remove('versteckt');
+      frage.scrollIntoView({ block: 'nearest' });
+    };
+
+    q('[data-setzen]').onclick = () => {
+      const n = q('[data-neu]').value.trim();
+      if (Number(q('[data-probe]').value) !== fa * fb) { melde('Die Rechnung für Eltern stimmt noch nicht.', 'schlecht'); return; }
+      if (!/^\d{1,5}$/.test(n)) { melde('Bitte eine Sternzahl zwischen 0 und 99999 eintragen.', 'schlecht'); return; }
+      stand.sterne = Number(n);
+      speichern(); d.zu(); zeigeStart();
+      zeigeEltern(`Sterne gesetzt: ${stand.sterne} ⭐`);
+    };
+
     const reset = el('button', 'leise-btn', 'Fortschritt zurücksetzen');
     let sicher = false;
     reset.onclick = () => {
@@ -511,6 +662,7 @@ window.App = (function () {
 
   function start() {
     zeigeStart();
+    schuetzeSpeicher();
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }

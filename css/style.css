@@ -77,6 +77,22 @@ small { font-size: .78em; }
 .eltern-tabelle th, .eltern-tabelle td { padding: 6px 8px; border-bottom: 1px solid #eee; text-align: left; }
 .eltern-tabelle th { color: var(--leise); font-size: .75rem; }
 .klein { font-size: .8rem; color: var(--leise); }
+.sicherung { border-top: 2px solid #eee; padding-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+.sicherung h3 { margin: 0; font-size: 1.05rem; font-weight: 900; }
+.sicherung p { margin: 0; }
+.sich-knoepfe { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.knopf-klein { background: var(--akzent); color: #fff; font-weight: 900; font-size: .95rem; padding: 10px 12px; border-radius: 16px; min-height: 56px; box-shadow: 0 4px 0 rgba(0, 0, 0, .2); }
+.knopf-klein.zweit { background: #f6f2ff; color: var(--text); box-shadow: 0 4px 0 #ddd6e8; }
+.knopf-klein:active { transform: translateY(3px); }
+.meldung { font-size: .9rem; font-weight: 800; border-radius: 12px; padding: 8px 12px; }
+.meldung.gut { background: var(--gruen-hell); color: #17783f; }
+.meldung.schlecht { background: var(--rot-hell); color: #b0281a; }
+.sich-frage { background: #fff5cc; border-radius: 14px; padding: 12px; font-size: .9rem; display: flex; flex-direction: column; gap: 10px; }
+.hand summary { color: var(--leise); font-size: .9rem; font-weight: 800; padding: 8px 0; cursor: pointer; }
+.hand-inhalt { display: flex; flex-direction: column; gap: 10px; padding-bottom: 4px; }
+.hand label { font-size: .9rem; font-weight: 800; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.hand input { font: inherit; font-weight: 800; width: 7em; padding: 8px 10px; border: 3px solid #e2dcee; border-radius: 12px; background: #fff; color: var(--text); user-select: text; -webkit-user-select: text; }
+.hand input:focus { outline: none; border-color: var(--akzent); }
 
 /* ---------------- Aufgabe ---------------- */
 .aufgabe-screen { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
