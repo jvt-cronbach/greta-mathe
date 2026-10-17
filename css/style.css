@@ -238,6 +238,7 @@ small { font-size: .78em; }
 .baer-anim { transform-box: fill-box; transform-origin: 50% 100%; animation: wiegen 4s ease-in-out infinite; }
 .wolke { animation: ziehen 22s ease-in-out infinite alternate; }
 .wolke.langsam { animation-duration: 30s; }
+.funkeln { transform-box: fill-box; transform-origin: 50% 50%; animation: funkeln 1.6s ease-in-out infinite; }
 .jubel .greta-anim { animation: springen .7s ease-in-out infinite; }
 .jubel .hase-anim { animation: springen .8s ease-in-out infinite .15s; }
 .jubel .baer-anim { animation: springen 1s ease-in-out infinite .3s; }
@@ -249,6 +250,7 @@ small { font-size: .78em; }
 @keyframes ohr { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
 @keyframes schaukeln { 0%, 100% { transform: rotate(9deg); } 50% { transform: rotate(-9deg); } }
 @keyframes wiegen { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+@keyframes funkeln { 0%, 100% { opacity: .15; transform: scale(.5); } 50% { opacity: 1; transform: scale(1.2); } }
 @keyframes ziehen { to { transform: translateX(40px); } }
 @keyframes springen { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
 @keyframes huepfer { 50% { transform: translateY(-8px) scale(1.06); } }
@@ -258,3 +260,10 @@ small { font-size: .78em; }
 @keyframes fallen { to { transform: translateY(110vh) rotate(720deg); } }
 @keyframes flug { 70% { opacity: 1; } to { transform: translate(calc(-50% + var(--dx)), var(--dy)) scale(.5); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
+
+/* Nächstes Ziel */
+.ziel { display: flex; align-items: center; gap: 10px; background: #fff7d6; border: 2px dashed #ffc83d; border-radius: 16px; padding: 8px 12px; font-weight: 800; font-size: .95rem; }
+.ziel .geschenk { font-size: 1.6rem; line-height: 1; }
+.ziel small { display: block; color: var(--leise); font-weight: 700; font-size: .8rem; }
+.welt-box .ziel { margin: 0 18px 16px; }
+.ende .ziel { max-width: 560px; margin: 0 auto 14px; text-align: left; }

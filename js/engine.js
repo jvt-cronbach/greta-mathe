@@ -147,6 +147,12 @@ window.App = (function () {
   const WEITER = ['Weiter geht’s!', 'Auf zur nächsten!', 'Du machst das super.', 'Schau genau hin.', 'Ich glaub an dich!'];
   const START = ['Du schaffst das!', 'Los geht’s, {name}!', 'Ich bin gespannt!', 'Schau genau hin!'];
 
+  /* Hinweis auf das nächste Ziel in Gretas Welt */
+  function zielHinweis(sterne) {
+    const w = App.welt.info(sterne);
+    return `<div class="ziel"><span class="geschenk">🎁</span><span>Nächstes Ziel: ${w.naechste.titel}<small>Noch ${w.fehlen} ⭐ sammeln</small></span></div>`;
+  }
+
   /* ======================= STARTBILDSCHIRM ======================= */
   function zeigeStart() {
     runde = null; akt = null;
@@ -164,9 +170,9 @@ window.App = (function () {
               <span class="level">Level ${w.level}</span>
               <div class="balken">
                 <div class="balken-spur"><div class="balken-fill" style="width:${Math.max(3, Math.round(w.fortschritt * 100))}%"></div></div>
-                <small>Noch <b>${w.fehlen} ⭐</b> bis: <b>${w.naechste.titel}</b></small>
               </div>
             </div>
+            ${zielHinweis(stand.sterne)}
           </section>
           <section class="themen"></section>
         </div>
@@ -535,6 +541,7 @@ window.App = (function () {
         <div class="ende-sterne">+${r.sterne} ⭐ <small>von ${r.max}</small></div>
         ${neu.map((n) => `<div class="neu-karte">🎉 <b>Neu freigeschaltet: ${n.titel}</b><br>${txt(n.neu)}</div>`).join('')}
         <div class="welt jubel">${App.welt.szene(stand.sterne)}</div>
+        ${zielHinweis(stand.sterne)}
         <div class="ende-knoepfe">
           <button type="button" class="knopf zweit" data-nochmal>🔁 Nochmal</button>
           <button type="button" class="knopf" data-welt>🏡 Zur Welt</button>

@@ -1,22 +1,23 @@
 /* =====================================================================
    GRETAS WELT – Figur, Freunde und was mit den Sternen wächst
    ---------------------------------------------------------------------
-   Neue Belohnungen: einfach unten in STUFEN ergänzen (ab = Sterne).
+   Neue Belohnungen: in STUFEN ergänzen (key, ab = Sterne) und in merkmale() per hat(key) abfragen.
    ===================================================================== */
 'use strict';
 
 App.welt = (function () {
   const STUFEN = [
-    { ab: 0, titel: 'Gretas Garten', neu: 'Greta startet ihre Mathe-Reise.' },
-    { ab: 20, titel: 'WuschWusch der Hase', neu: 'WuschWusch der Hase ist jetzt Gretas Freund!' },
-    { ab: 50, titel: 'Glitzer-Schleife', neu: 'Greta bekommt eine Glitzer-Schleife für ihren Pferdeschwanz.' },
-    { ab: 90, titel: 'Der Baum wächst', neu: 'Der kleine Baum in Gretas Garten ist gewachsen!' },
-    { ab: 140, titel: 'BabyAffi', neu: 'BabyAffi der kleine Affe schaukelt jetzt im großen Baum!' },
-    { ab: 200, titel: 'Das Baumhaus', neu: 'Ein Baumhaus! Gebaut aus lauter Mathe-Sternen.' },
-    { ab: 270, titel: 'Heldinnen-Umhang', neu: 'Greta trägt jetzt einen Mathe-Heldinnen-Umhang!' },
-    { ab: 350, titel: 'Lenchen die Bärin', neu: 'Lenchen die Bärin kommt zu Besuch – und bleibt!' },
-    { ab: 440, titel: 'Der Regenbogen', neu: 'Ein Regenbogen leuchtet über Gretas Welt!' },
-    { ab: 550, titel: 'Die Mathe-Krone', neu: 'Greta trägt jetzt die Mathe-Krone!' },
+    { key: 'start', ab: 0, titel: 'Gretas Garten', neu: 'Greta startet ihre Mathe-Reise.' },
+    { key: 'hase', ab: 20, titel: 'WuschWusch der Hase', neu: 'WuschWusch der Hase ist jetzt Gretas Freund!' },
+    { key: 'schleife', ab: 50, titel: 'Glitzer-Schleife', neu: 'Greta bekommt eine Glitzer-Schleife für ihren Pferdeschwanz.' },
+    { key: 'baum', ab: 90, titel: 'Der Baum wächst', neu: 'Der kleine Baum in Gretas Garten ist gewachsen!' },
+    { key: 'affe', ab: 140, titel: 'BabyAffi', neu: 'BabyAffi der kleine Affe schaukelt jetzt im großen Baum!' },
+    { key: 'baumhaus', ab: 200, titel: 'Das Baumhaus', neu: 'Ein Baumhaus! Gebaut aus lauter Mathe-Sternen.' },
+    { key: 'ohrringe', ab: 250, titel: 'Blaue Glitzer-Ohrringe', neu: 'Greta trägt jetzt blaue Glitzer-Ohrringe – die funkeln richtig!' },
+    { key: 'umhang', ab: 270, titel: 'Heldinnen-Umhang', neu: 'Greta trägt jetzt einen Mathe-Heldinnen-Umhang!' },
+    { key: 'baer', ab: 350, titel: 'Lenchen die Bärin', neu: 'Lenchen die Bärin kommt zu Besuch – und bleibt!' },
+    { key: 'regenbogen', ab: 440, titel: 'Der Regenbogen', neu: 'Ein Regenbogen leuchtet über Gretas Welt!' },
+    { key: 'krone', ab: 550, titel: 'Die Mathe-Krone', neu: 'Greta trägt jetzt die Mathe-Krone!' },
   ];
   const BLUME_ALLE = 80; // danach: alle 80 Sterne eine neue Blume
   const BLUMEN_POS = [[30, 236], [262, 238], [375, 232], [110, 242], [170, 246], [240, 244], [300, 240], [50, 246], [390, 246], [140, 236], [10, 240], [355, 244]];
@@ -42,15 +43,18 @@ App.welt = (function () {
     return liste;
   }
 
+  // Merkmale hängen am Schlüssel der Stufe, nicht an ihrer Position –
+  // so kann man neue Stufen überall einfügen.
   function merkmale(sterne) {
     const { idx, blumen } = info(sterne);
+    const hat = (key) => STUFEN.some((s) => s.key === key && sterne >= s.ab);
     return {
       idx, blumen,
-      hase: idx >= 1, schleife: idx >= 2,
-      baum: idx >= 4 ? 2 : idx >= 3 ? 1 : 0,
-      affe: idx >= 4, baumhaus: idx >= 5, umhang: idx >= 6,
-      baer: idx >= 7, regenbogen: idx >= 8, krone: idx >= 9,
-      groesse: 0.86 + Math.min(idx, 9) * 0.03,
+      hase: hat('hase'), schleife: hat('schleife'),
+      baum: hat('affe') ? 2 : hat('baum') ? 1 : 0,
+      affe: hat('affe'), baumhaus: hat('baumhaus'), ohrringe: hat('ohrringe'), umhang: hat('umhang'),
+      baer: hat('baer'), regenbogen: hat('regenbogen'), krone: hat('krone'),
+      groesse: 0.86 + Math.min(idx, 10) * 0.027,
     };
   }
 
@@ -81,6 +85,13 @@ App.welt = (function () {
       <circle cx="-7" cy="-104.3" r="1.1" fill="#fff"/><circle cx="9" cy="-104.3" r="1.1" fill="#fff"/>
       <circle cx="-14" cy="-95" r="4" fill="#ff9aa2" opacity=".6"/><circle cx="14" cy="-95" r="4" fill="#ff9aa2" opacity=".6"/>
       <path d="M-6 -95 Q0 -89 6 -95" stroke="#b5524f" stroke-width="2" stroke-linecap="round" fill="none"/>
+      ${m.ohrringe ? [-1, 1].map((r) => `<g transform="translate(${r * 22} -98)">
+        <circle r="2.2" fill="#4fc3f7" stroke="#1e88e5" stroke-width=".8"/>
+        <path d="M0 2 L0 4.5" stroke="#90caf9" stroke-width="1"/>
+        <path d="M0 4 L3.6 8.6 L0 13.6 L-3.6 8.6Z" fill="#2f8cff" stroke="#1565c0" stroke-width=".9"/>
+        <path d="M0 5.5 L1.6 8.6 L0 10.5Z" fill="#bfe6ff" opacity=".9"/>
+        <path class="funkeln" d="M${r * 5} 3 l.9 2.1 2.1.9 -2.1.9 -.9 2.1 -.9-2.1 -2.1-.9 2.1-.9z" fill="#fff"/>
+      </g>`).join('') : ''}
       ${m.krone ? `<path d="M-14 -127 L-15 -143 L-7 -135 L0 -147 L7 -135 L15 -143 L14 -127Z" fill="#ffd54a" stroke="#e0a800" stroke-width="1.5"/><circle cx="0" cy="-133" r="2.3" fill="#e8434f"/><circle cx="-8" cy="-131" r="1.6" fill="#4fc3f7"/><circle cx="8" cy="-131" r="1.6" fill="#2ecc71"/>` : ''}
     </g>`;
   }
