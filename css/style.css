@@ -267,3 +267,66 @@ small { font-size: .78em; }
 .ziel small { display: block; color: var(--leise); font-weight: 700; font-size: .8rem; }
 .welt-box .ziel { margin: 0 18px 16px; }
 .ende .ziel { max-width: 560px; margin: 0 auto 14px; text-align: left; }
+
+/* ===== Zahlenraum bis 1000 (15.11.2026) ===== */
+.bild-oben { margin: 0 0 14px; }
+/* Mengenbild: Tausender, Hunderter, Zehner, Einer */
+.mb { display: inline-flex; flex-wrap: wrap; align-items: flex-end; gap: 14px; padding: 10px 12px; background: #fffaf0; border-radius: 14px; vertical-align: middle; }
+.mb-gruppe { display: inline-flex; align-items: flex-end; gap: 4px; flex-wrap: wrap; }
+.mb-einer { display: inline-grid; grid-template-columns: repeat(5, 11px); gap: 4px; align-self: flex-end; }
+.mb-luecke { width: 6px; }
+.mb-h, .mb-z, .mb-e, .mb-t { display: inline-block; background-color: #d08a4c; border: 1.5px solid #7a4419; }
+.mb-h { width: 54px; height: 54px; background-image: linear-gradient(#7a441966 1px, transparent 1px), linear-gradient(90deg, #7a441966 1px, transparent 1px); background-size: 5.2px 5.2px; }
+.mb-z { width: 11px; height: 54px; background-image: linear-gradient(#7a441988 1px, transparent 1px); background-size: 11px 5.2px; }
+.mb-e { width: 11px; height: 11px; }
+.mb-t { width: 64px; height: 64px; box-shadow: 4px -4px 0 #b06f37, 8px -8px 0 #a5652f, 12px -12px 0 #9a5c2a; margin: 12px 12px 0 0; background-image: linear-gradient(#7a441955 1px, transparent 1px), linear-gradient(90deg, #7a441955 1px, transparent 1px); background-size: 5.2px 5.2px; }
+/* Zahlenkarten */
+.zk { display: inline-flex; padding: .08em .04em; border-radius: 8px; font-weight: 900; font-size: 1.9rem; line-height: 1.15; border: 2px solid rgba(0,0,0,.18); box-shadow: 0 3px 0 rgba(0,0,0,.12); font-variant-numeric: tabular-nums; }
+.zk-d { display: inline-block; width: .7em; text-align: center; }
+.zk-h { background: #ffe066; }
+.zk.zk-z { background: #8ce0ee; }
+.zk-e { background: #ff9b9b; }
+.zk-reihe { display: inline-flex; gap: 14px; flex-wrap: wrap; vertical-align: middle; }
+.zk-stapel { position: relative; display: inline-block; font-size: 2.4rem; width: calc(3 * .7em + .08em + 4px); height: calc(1.15em + .16em + 8px); margin-top: 8px; vertical-align: middle; }
+.zk-stapel .zk { font-size: 1em; box-shadow: -3px 3px 0 rgba(0,0,0,.18); }
+.zk-abs { position: absolute; right: 0; }
+/* Stellenwerttafel */
+.swt th { min-width: 2.4em; }
+.swt th.swt-t { background: #5c3d99; }
+.swt th.swt-h { background: #e8a400; }
+.swt th.swt-z { background: #1c9fb5; }
+.swt th.swt-e { background: #e8590c; }
+.swt th.swt-zahl { background: #2f2a3b; }
+.swt td { min-width: 2.4em; height: 2.4em; }
+.swt td.swt-zahlzelle { min-width: 3.6em; border-left-width: 6px; }
+.swt td .feld { min-width: 1.9em; }
+.swt td.swt-zahlzelle .feld { min-width: 3.1em; }
+.plaettchen { display: inline-grid; grid-template-columns: repeat(3, 14px); gap: 4px; justify-content: center; vertical-align: middle; }
+.plaettchen i { width: 14px; height: 14px; border-radius: 50%; background: #3b5bdb; }
+/* Zahlenfolge */
+.folge { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 4px; font-size: 1.8rem; font-weight: 800; font-variant-numeric: tabular-nums; max-width: 46rem; }
+.folge-glied { display: inline-flex; align-items: center; }
+.folge-zahl { background: #fff; border: 3px solid #e2dcee; border-radius: 12px; padding: 0 .3em; height: 1.65em; display: inline-flex; align-items: center; }
+.folge .feld { min-width: 2.9em; }
+.folge-komma { margin: 0 .15em 0 .05em; color: var(--leise); }
+/* Zahlenkreuz */
+.kreuz { display: inline-grid; grid-template-columns: repeat(3, 4.2em); grid-template-rows: repeat(3, 2.1em); gap: 6px; font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums; grid-template-areas: ". oben ." "links mitte rechts" ". unten ."; }
+.kreuz-zelle { display: flex; align-items: center; justify-content: center; background: #fff; border: 3px solid #cfc6e2; border-radius: 12px; }
+.kreuz-zelle.hat-feld { border: 0; background: none; }
+.kreuz-zelle .feld { width: 100%; min-width: 0; height: 100%; }
+.kreuz-zelle.kz-leer { visibility: hidden; }
+.kz-oben { grid-area: oben; } .kz-unten { grid-area: unten; } .kz-links { grid-area: links; } .kz-rechts { grid-area: rechts; }
+.kz-mitte { grid-area: mitte; background: #fff4cc; border-color: var(--farbe); }
+/* Hunderterfeld aus dem Tausenderstreifen */
+.hf-wrap { display: inline-block; background: #fff; border-radius: 14px; padding: 8px 10px 10px; box-shadow: var(--schatten); margin-bottom: 14px; }
+.hf-titel { font-weight: 900; font-size: .85rem; color: var(--leise); margin-bottom: 4px; }
+.hf { display: grid; grid-template-columns: repeat(10, 42px); grid-auto-rows: 33px; border: 2px solid #8a7fb0; }
+.hf-z { border: 1px solid #d8d1ea; font-size: 11.5px; font-weight: 800; color: #5d5470; display: flex; align-items: center; justify-content: center; font-variant-numeric: tabular-nums; }
+.hf-muster { background: #c3fae8; color: #0b7285; }
+.hf-marke { font-size: 15px; font-weight: 900; color: #fff; border-radius: 6px; }
+.hf-m0 { background: #f03e3e; } .hf-m1 { background: #1c7ed6; } .hf-m2 { background: #f59f00; } .hf-m3 { background: #37b24d; }
+.hf-fragen .hf-marke { font-size: .8em; padding: 0 .35em; display: inline-block; }
+@media (max-width: 420px) { .hf { grid-template-columns: repeat(10, 30px); } .hf-z { font-size: 9.5px; } }
+.angabe { display: inline-block; margin: 8px 8px 0 0; font-size: 1.6rem; font-weight: 900; background: #fff4cc; border-radius: 12px; padding: .1em .5em; letter-spacing: .02em; }
+.wuerfel { display: inline-flex; align-items: center; justify-content: center; width: 1.7em; height: 1.7em; margin: 8px 4px 0 0; background: #ffe066; border: 3px solid #e0a800; border-radius: 10px; font-size: 1.5rem; font-weight: 900; box-shadow: 0 3px 0 #c99700; }
+.zk-reihe .zk { padding: .08em .2em; }
