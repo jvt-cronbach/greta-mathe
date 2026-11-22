@@ -16,10 +16,10 @@ App.welt = (function () {
     { key: 'ohrringe', ab: 250, titel: 'Blaue Glitzer-Ohrringe', neu: 'Greta trägt jetzt blaue Glitzer-Ohrringe – die funkeln richtig!' },
     { key: 'umhang', ab: 270, titel: 'Heldinnen-Umhang', neu: 'Greta trägt jetzt einen Mathe-Heldinnen-Umhang!' },
     { key: 'baer', ab: 350, titel: 'Lenchen die Bärin', neu: 'Lenchen die Bärin kommt zu Besuch – und bleibt!' },
-    { key: 'regenbogen', ab: 440, titel: 'Der Regenbogen', neu: 'Ein Regenbogen leuchtet über Gretas Welt!' },
+    { key: 'affi', ab: 400, titel: 'Affi', neu: 'Affi der blaue Strickaffe kommt in Gretas Garten!' },
+    { key: 'coco', ab: 450, titel: 'Coco', neu: 'Coco, der wollweiße Affe mit den bunten Streifen, ist jetzt auch da!' },
+    { key: 'regenbogen', ab: 500, titel: 'Der Regenbogen', neu: 'Ein Regenbogen leuchtet über Gretas Welt!' },
     { key: 'krone', ab: 550, titel: 'Die Mathe-Krone', neu: 'Greta trägt jetzt die Mathe-Krone!' },
-    { key: 'affi', ab: 630, titel: 'Affi', neu: 'Affi der blaue Strickaffe kommt in Gretas Garten!' },
-    { key: 'coco', ab: 720, titel: 'Coco', neu: 'Coco, der wollweiße Affe mit den bunten Streifen, ist jetzt auch da!' },
   ];
   const BLUME_ALLE = 80; // danach: alle 80 Sterne eine neue Blume
   const BLUMEN_POS = [[262, 238], [110, 242], [170, 246], [240, 244], [300, 240], [140, 236], [30, 236], [375, 232], [50, 246], [390, 246], [10, 240], [355, 244]];
