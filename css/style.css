@@ -236,6 +236,8 @@ small { font-size: .78em; }
 .ohr-r { transform-box: fill-box; transform-origin: 20% 5%; animation: ohr 2.6s ease-in-out infinite reverse; }
 .affe-anim { transform-box: fill-box; transform-origin: 50% 0%; animation: schaukeln 3.2s ease-in-out infinite; }
 .baer-anim { transform-box: fill-box; transform-origin: 50% 100%; animation: wiegen 4s ease-in-out infinite; }
+.strick-kopf { transform-box: fill-box; transform-origin: 50% 90%; animation: kopfneigen 4.4s ease-in-out infinite; }
+.jubel .strick-anim { transform-box: fill-box; transform-origin: 50% 100%; animation: springen .9s ease-in-out infinite .2s; }
 .wolke { animation: ziehen 22s ease-in-out infinite alternate; }
 .wolke.langsam { animation-duration: 30s; }
 .funkeln { transform-box: fill-box; transform-origin: 50% 50%; animation: funkeln 1.6s ease-in-out infinite; }
@@ -247,6 +249,7 @@ small { font-size: .78em; }
 @keyframes winken { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-20deg); } }
 @keyframes zopf { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(7deg); } }
 @keyframes hoppeln { 0%, 60%, 100% { transform: translateY(0); } 70% { transform: translateY(-10px); } 80% { transform: translateY(0); } 87% { transform: translateY(-4px); } }
+@keyframes kopfneigen { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
 @keyframes ohr { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
 @keyframes schaukeln { 0%, 100% { transform: rotate(9deg); } 50% { transform: rotate(-9deg); } }
 @keyframes wiegen { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
@@ -330,3 +333,12 @@ small { font-size: .78em; }
 .angabe { display: inline-block; margin: 8px 8px 0 0; font-size: 1.6rem; font-weight: 900; background: #fff4cc; border-radius: 12px; padding: .1em .5em; letter-spacing: .02em; }
 .wuerfel { display: inline-flex; align-items: center; justify-content: center; width: 1.7em; height: 1.7em; margin: 8px 4px 0 0; background: #ffe066; border: 3px solid #e0a800; border-radius: 10px; font-size: 1.5rem; font-weight: 900; box-shadow: 0 3px 0 #c99700; }
 .zk-reihe .zk { padding: .08em .2em; }
+
+/* Fit für die Mathearbeit: Punktebilder (Welche Rechnung passt?) und Plättchentafel */
+.pb { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 10px 12px; background: #fffaf0; border-radius: 14px; vertical-align: middle; margin: 6px 0; }
+.pb-box { display: inline-grid; grid-template-columns: repeat(2, 14px); gap: 6px; padding: 8px; border: 2.5px solid #2b8a83; border-radius: 8px; background: #e9f6f4; }
+.pb-lose { display: inline-grid; grid-template-columns: repeat(2, 14px); gap: 6px; padding: 8px 2px; }
+.pb i { width: 14px; height: 14px; border-radius: 50%; background: #17605b; }
+.ma-swt { margin: 4px auto 6px; }
+.ma-swt td { min-width: 76px; height: 58px; }
+.option .mb { pointer-events: none; }

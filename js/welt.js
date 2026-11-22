@@ -18,9 +18,11 @@ App.welt = (function () {
     { key: 'baer', ab: 350, titel: 'Lenchen die Bärin', neu: 'Lenchen die Bärin kommt zu Besuch – und bleibt!' },
     { key: 'regenbogen', ab: 440, titel: 'Der Regenbogen', neu: 'Ein Regenbogen leuchtet über Gretas Welt!' },
     { key: 'krone', ab: 550, titel: 'Die Mathe-Krone', neu: 'Greta trägt jetzt die Mathe-Krone!' },
+    { key: 'affi', ab: 630, titel: 'Affi', neu: 'Affi der blaue Strickaffe kommt in Gretas Garten!' },
+    { key: 'coco', ab: 720, titel: 'Coco', neu: 'Coco, der wollweiße Affe mit den bunten Streifen, ist jetzt auch da!' },
   ];
   const BLUME_ALLE = 80; // danach: alle 80 Sterne eine neue Blume
-  const BLUMEN_POS = [[30, 236], [262, 238], [375, 232], [110, 242], [170, 246], [240, 244], [300, 240], [50, 246], [390, 246], [140, 236], [10, 240], [355, 244]];
+  const BLUMEN_POS = [[262, 238], [110, 242], [170, 246], [240, 244], [300, 240], [140, 236], [30, 236], [375, 232], [50, 246], [390, 246], [10, 240], [355, 244]];
 
   function info(sterne) {
     let idx = 0;
@@ -54,6 +56,7 @@ App.welt = (function () {
       baum: hat('affe') ? 2 : hat('baum') ? 1 : 0,
       affe: hat('affe'), baumhaus: hat('baumhaus'), ohrringe: hat('ohrringe'), umhang: hat('umhang'),
       baer: hat('baer'), regenbogen: hat('regenbogen'), krone: hat('krone'),
+      affi: hat('affi'), coco: hat('coco'),
       groesse: 0.86 + Math.min(idx, 10) * 0.027,
     };
   }
@@ -144,6 +147,43 @@ App.welt = (function () {
     </g>`;
   }
 
+  /* Affi und Coco: gestrickte Sockenaffen nach Gretas Kuscheltieren.
+     Sitzen mit langen Beinen nach vorn, Po bei 0,0. Etwas größer als BabyAffi. */
+  function strickAffe(o) {
+    const k = o.muster, rand = o.rand, gesicht = o.gesicht || k, hand = o.hand || k;
+    const glied = (x, y, w, lang, dick, endeLang) => `<g transform="rotate(${w} ${x} ${y})">
+        <rect x="${x - dick / 2}" y="${y}" width="${dick}" height="${lang}" rx="${dick / 2}" fill="${k}" stroke="${rand}" stroke-width=".8"/>
+        <rect x="${x - dick / 2 - .4}" y="${y + lang - endeLang}" width="${dick + .8}" height="${endeLang}" rx="${dick / 2 + .4}" fill="${hand}" stroke="${rand}" stroke-width=".8"/></g>`;
+    return `<g class="strick-anim">
+      ${glied(-10, -37, 24, 36, 7, 8)}${glied(10, -37, -24, 36, 7, 8)}
+      ${glied(-6, -14, 38, 28, 9, 10)}${glied(6, -14, -38, 28, 9, 10)}
+      <ellipse cx="0" cy="-13" rx="13.5" ry="10" fill="${k}" stroke="${rand}" stroke-width=".8"/>
+      <ellipse cx="0" cy="-26" rx="12" ry="15" fill="${k}" stroke="${rand}" stroke-width=".8"/>
+      <ellipse cx="0" cy="-14" rx="12.6" ry="8.4" fill="${k}"/>
+      <g class="strick-kopf">
+        <circle cx="-14.5" cy="-52" r="6" fill="${o.ohr || k}" stroke="${rand}" stroke-width=".8"/><circle cx="14.5" cy="-52" r="6" fill="${o.ohr || k}" stroke="${rand}" stroke-width=".8"/>
+        <circle cx="-14.5" cy="-52" r="3.2" fill="${o.ohrInnen || gesicht}" opacity=".9"/><circle cx="14.5" cy="-52" r="3.2" fill="${o.ohrInnen || gesicht}" opacity=".9"/>
+        <circle cx="0" cy="-54" r="14.5" fill="${k}" stroke="${rand}" stroke-width=".8"/>
+        ${o.gesicht ? `<path d="M-11 -50 C-11 -60 -6 -63 0 -59.5 C6 -63 11 -60 11 -50Z" fill="${gesicht}"/>` : ''}
+        <ellipse cx="0" cy="-45" rx="12" ry="9" fill="${gesicht}" stroke="${rand}" stroke-width=".8"/>
+        <path d="M-10 -48.5 Q0 -51.5 10 -48.5" stroke="${rand}" stroke-width=".9" fill="none" opacity=".8"/>
+        ${o.mund}
+        <circle cx="-4.6" cy="-55" r="2" fill="#2a1d17"/><circle cx="4.6" cy="-55" r="2" fill="#2a1d17"/>
+        <circle cx="-4" cy="-55.6" r=".7" fill="#fff"/><circle cx="5.2" cy="-55.6" r=".7" fill="#fff"/>
+      </g>
+    </g>`;
+  }
+  // Affi: blau gestreift, Gesicht, Hände und Füße hellbraun, kleiner roter Mund
+  const affi = () => strickAffe({
+    muster: 'url(#strick-blau)', rand: '#6f7fae', gesicht: '#cfae82', hand: '#cfae82', ohrInnen: '#b8c4ea',
+    mund: '<path d="M-9.5 -42 Q-5 -37.8 0 -38.4" stroke="#d3343f" stroke-width="1.8" stroke-linecap="round" fill="none"/>',
+  });
+  // Coco: wollweiß mit bunten Streifen, breites rotes Lächeln
+  const coco = () => strickAffe({
+    muster: 'url(#strick-weiss)', rand: '#d9ceb8', gesicht: 'url(#strick-weiss)',
+    mund: '<path d="M-10.5 -44 Q0 -35.5 10.5 -44" stroke="#e01f35" stroke-width="2.6" stroke-linecap="round" fill="none"/>',
+  });
+
   function baer() { // Lenchen: rosa Oberteil, blaue Hose
     const fell = '#9b6238', hell = '#e0b287', rosa = '#ff8cc6', rosaD = '#e8649f', blau = '#3b6fd8', blauD = '#2a55ad';
     return `<g class="baer-anim">
@@ -209,7 +249,9 @@ App.welt = (function () {
     const m = merkmale(sterne);
     const bogen = ['#ff5f5f', '#ffa24c', '#ffe066', '#6fd672', '#5fb4ff', '#9b7bff'];
     return `<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gretas Welt">
-      <defs><linearGradient id="himmel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fdcff"/><stop offset="1" stop-color="#e6f7ff"/></linearGradient><pattern id="streifen" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fff"/><rect width="6" height="3" fill="#4a86e8"/></pattern></defs>
+      <defs><linearGradient id="himmel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fdcff"/><stop offset="1" stop-color="#e6f7ff"/></linearGradient><pattern id="streifen" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fff"/><rect width="6" height="3" fill="#4a86e8"/></pattern>
+        <pattern id="strick-blau" width="8" height="7" patternUnits="userSpaceOnUse"><rect width="8" height="7" fill="#9aa8db"/><rect width="8" height="2.6" fill="#a7dbea"/><path d="M0 4.7 H8" stroke="#5f6478" stroke-width="1.2" stroke-dasharray="4 1.2"/></pattern>
+        <pattern id="strick-weiss" width="12" height="24" patternUnits="userSpaceOnUse"><rect width="12" height="24" fill="#f8f3e6"/><path d="M0 3 H12" stroke="#f2789f" stroke-width="1.6" stroke-dasharray="6 1.2"/><path d="M1 9.5 H12" stroke="#6f93d6" stroke-width="1.3" stroke-dasharray="5 1.5"/><path d="M0 15.5 H12" stroke="#c8bb52" stroke-width="1.3" stroke-dasharray="7 1.2"/><path d="M2 21 H12" stroke="#f05f8c" stroke-width="1.2" stroke-dasharray="4 2"/></pattern></defs>
       <rect width="400" height="250" fill="url(#himmel)"/>
       <circle cx="52" cy="44" r="22" fill="#ffd54a"/><circle cx="52" cy="44" r="30" fill="#ffd54a" opacity=".25"/>
       <g class="wolke"><ellipse cx="150" cy="40" rx="24" ry="10" fill="#fff"/><ellipse cx="166" cy="34" rx="14" ry="10" fill="#fff"/></g>
@@ -220,7 +262,9 @@ App.welt = (function () {
       <g transform="translate(330 214)">${baum(m)}</g>
       ${m.affe ? `<g transform="translate(282 120)">${affe()}</g>` : ''}
       ${BLUMEN_POS.slice(0, m.blumen).map((p, i) => blume(p[0], p[1], i)).join('')}
-      ${m.baer ? `<g transform="translate(70 228) scale(.95)">${baer()}</g>` : ''}
+      ${m.baer ? `<g transform="translate(${m.coco ? 80 : 70} 228) scale(.95)">${baer()}</g>` : ''}
+      ${m.coco ? `<g transform="translate(30 240)">${coco()}</g>` : ''}
+      ${m.affi ? `<g transform="translate(368 240)">${affi()}</g>` : ''}
       ${m.hase ? `<g transform="translate(140 230)">${hase()}</g>` : ''}
       <g transform="translate(206 232) scale(${m.groesse})">${greta(m)}</g>
     </svg>`;

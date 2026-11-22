@@ -8,6 +8,7 @@ Hilfreich, aber optional: Beispielaufgabe aus dem Schulheft (Foto), Zahlenraum, 
 
 ## Figuren
 Greta (blond, Pferdeschwanz), WuschWusch (Widderkaninchen, heller Pulli mit Möhren), BabyAffi (blau-weiß gestreiftes Nachthemd, rote Schleife), Lenchen (Bärin, rosa Oberteil, blaue Hose). Gerne in Sachaufgaben verwenden.
+Als Belohnungsziele dazu (noch nicht in Sachaufgaben, um nichts zu verraten): Affi (blauer Strickaffe, ab 630 ⭐) und Coco (wollweißer Strickaffe mit bunten Streifen, ab 720 ⭐) – nach Gretas echten Kuscheltieren.
 
 ## Für Claude (technisch)
 1. `themen/_vorlage.js` nach `themen/<id>.js` kopieren und `erzeuge(stufe)` schreiben.
